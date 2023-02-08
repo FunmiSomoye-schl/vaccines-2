@@ -4,3 +4,4 @@
 
 #Mac clean-up
 *.ds_store
+data/
