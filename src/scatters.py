@@ -6,6 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sys
 import numpy as np
+import create_dates
 
 def scatter(month):
     df = pd.read_csv('data/Merge/vaccinations-and-deaths-'+month+'.csv', converters={'FIPS' : str})
@@ -22,7 +23,6 @@ def scatter(month):
     ax.set_ylabel("Deaths per 100K")
     ax.set_xlim(0,100)
     ax.set_ylim(0,400) #[KR] changed from 500 limit to 400 limit
-
 
     ax.set_title(" Vaccine Effectiveness Snapshot ", y=1.07, fontsize= 'xx-large') #[KR] added title )
     ax.text(0.5, 0.75, month , horizontalalignment='center', verticalalignment='center', transform=ax.transAxes 
@@ -55,20 +55,20 @@ def scatter(month):
 
     #[KR] Creates population legend using code-controlled bubble sizes
     for area_scl in [0.5, 2, 4]:
-        ax.scatter([], [], s = plot_scl*area_scl, c = "gray", alpha = 0.5, label = str(area_scl) + 'M')
-    ax.legend(loc = (1.05, 0.3), title="Population (Millions)", labelspacing = 1.5, borderpad = 1)
+        ax.scatter([], [], s=plot_scl*area_scl, c="gray", alpha=0.5, label=str(area_scl) + 'M')
+    ax.legend(loc = (1.05, 0.3), title="Population (Millions)", labelspacing=1.5, borderpad= 1)
 
     plt.tight_layout()    
-    plt.savefig('img/'+month+'.png')
+    plt.savefig('img/' + month+ '.png')
+
 
 def create_scatters():
-    """This function creates seven scatter plots based on the merged data.
     """
-    months = pd.read_csv("months.csv")
-    dates = months.date.to_list()
-    for date in dates:
-        # print(date)
+    This function creates seven scatter plots based on the merged data.
+    """
+    for date in create_dates.new_dates:
         scatter(date)
+
 
 if __name__ == "__main__":
     create_scatters()

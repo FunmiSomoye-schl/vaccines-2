@@ -1,4 +1,6 @@
 import pandas as pd
+import datetime as dt
+import create_dates
 
 def vaccines(desired_date):
     """Sample one date from the source dataset and write it to an intermediate file
@@ -8,7 +10,6 @@ def vaccines(desired_date):
     input_filename = "./data/COVID-19_Vaccinations_in_the_United_States_County.csv.gz"
     df = pd.read_csv(input_filename, compression="gzip", converters={'FIPS' : str})
     print("START:", df.shape)
-    
 
     # Filter by date
     desired_date = desired_date.replace("-", "/")
@@ -31,13 +32,14 @@ def vaccines(desired_date):
     df.to_csv(output_filename, index=False)
     return df
 
+
 def create_vaccines():
-    """This function generates vaccination data for seven different dates.
     """
-    months=pd.read_csv("months.csv")
-    dates=months.date.to_list()
-    for date in dates:
+    This function generates vaccination data for seven different dates.
+    """
+    for date in create_dates.new_dates:
         vaccines(date)
+
 
 if __name__ == "__main__":
     create_vaccines()

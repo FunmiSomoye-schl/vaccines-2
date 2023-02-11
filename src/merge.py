@@ -1,4 +1,5 @@
 import pandas as pd
+import create_dates
 
 def merge(date):
     """
@@ -18,6 +19,7 @@ def merge(date):
     # Add the deaths data to the dataframe
     return df.merge(deaths, on='FIPS')
 
+
 def write_merge_data_to_csv(date):
     """This function write a csv to directory data/Merge. 
     Parameters: 
@@ -25,18 +27,16 @@ def write_merge_data_to_csv(date):
     """
     base_Merge = "data/Merge/"
     df = merge(date)
-    # print(df)
-    df.to_csv(base_Merge+"vaccinations-and-deaths-"+date+'.csv', index=False)
+    df.to_csv(base_Merge + "vaccinations-and-deaths-" + date + '.csv', index=False)
+
 
 def create_merge_data():
     """This function write 7 csvs to directory data/Merge. 
     Please make sure that the csv to merge are already in in the ..data/JHU and ..data/CDC
     """
-    months=pd.read_csv("months.csv")
-    dates=months.date.to_list()
-
-    for date in dates:
+    for date in create_dates.new_dates:
         write_merge_data_to_csv(date)
+
 
 if __name__ == "__main__":
     create_merge_data()

@@ -1,5 +1,4 @@
 import pandas as pd
-import create_dates
 
 def readit(filename):
     """This is a function that reads in a csv from a URL and returns a dataframe. It 
@@ -19,7 +18,6 @@ def readit(filename):
     # This eliminates rows without a FIPS (i.e., foreign countries)
     return df[df['FIPS'] != ""]
 
-
 def get_death_number_JHU(start, end):
     """This is a function that returns a dataframe that contain Fips and the death number from start to end (two dates passed as strings), and create a csv file in data 
     Parameters: 
@@ -27,8 +25,8 @@ def get_death_number_JHU(start, end):
         end: str,
     """
     data = {}
+
     df_deaths = readit(end)
-    
     for i, row in df_deaths.iterrows():
         fips = row['FIPS']
         if len(fips) == 4:
@@ -51,10 +49,8 @@ def get_death_number_JHU(start, end):
         file.write("FIPS,Deaths\n")  # header
         for key, value in data.items():
             file.write(",".join([key, str(value)]) + "\n")
-
     df = pd.read_csv(filename)
     return df
-
 
 def get_confirm_number_JHU(start, end):
     """This is a function that returns the confirmed number from start_date to end_date
@@ -70,7 +66,7 @@ def get_confirm_number_JHU(start, end):
         if len(fips) == 4:
             fips = "0" + fips
         data[fips] = row["Confirmed"]
-
+    # print(data)
     df_confirmed = readit(start)
     for i, row in df_confirmed.iterrows():
         fips = row['FIPS']
@@ -91,31 +87,19 @@ def get_confirm_number_JHU(start, end):
     print()
     return df
 
-# def create_death_number_JHU():
-#     """This function writes death number into 7 (month) csv files, each file document death number from 05-01 to the end of this month
-#     Please create a JHU file in ../data First, Or this function will give error. 
-#     If you don't want to wast time to input augument to create csv file for every month please run following function
-#     """
-#     months=pd.read_csv("months.csv")
-#     months=months.date.to_list()
-
-#     start = months[0]
-#     ends = months
-    
-    # for end in ends:
-    #     get_death_number_JHU(start, end)
-
 def create_death_number_JHU():
     """This function writes death number into 7 (month) csv files, each file document death number from 05-01 to the end of this month
     Please create a JHU file in ../data First, Or this function will give error. 
     If you don't want to wast time to input augument to create csv file for every month please run following function
     """
-    start = '05-01-2021'
-    ends = create_dates.new_dates
+    months=pd.read_csv("months.csv")
+    months=months.date.to_list()
+
+    start = months[0]
+    ends = months
     
     for end in ends:
         get_death_number_JHU(start, end)
-
 
 if __name__ == "__main__":
     create_death_number_JHU()
