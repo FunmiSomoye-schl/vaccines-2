@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from collections import defaultdict
 import sys
+import create_dates
+
 
 def fips_to_name(FIPS):
     map = defaultdict(lambda: FIPS)
@@ -15,16 +17,7 @@ def fips_to_name(FIPS):
 
                 
 def comparison(FIPS_1='44003', FIPS_2='01125'):
-    months = {
-        'May':'05-31-2021',
-        'June':'06-30-2021',
-        'July':'07-31-2021',
-        'August':'08-31-2021',
-        'September':'09-30-2021',
-        'October':'10-31-2021',
-        'November':'11-30-2021',
-        'December':'12-31-2021'
-        }
+    months = create_dates.comp_dict
     file_list = []
 
     for month, csv_date in months.items():
@@ -38,8 +31,8 @@ def comparison(FIPS_1='44003', FIPS_2='01125'):
 
     FIPS_1_name = fips_to_name(FIPS_1)
     FIPS_2_name = fips_to_name(FIPS_2)
-
     print("Comparing " + FIPS_1_name + " and " + FIPS_2_name)
+
     FIPS_1_vax = cleaned_df.loc[cleaned_df['FIPS'] == FIPS_1]
     FIPS_1_vax = FIPS_1_vax["Series_Complete_18PlusPop_Pct"]
     FIPS_1_death = cleaned_df.loc[cleaned_df['FIPS'] == FIPS_1]
@@ -51,24 +44,29 @@ def comparison(FIPS_1='44003', FIPS_2='01125'):
     FIPS_2_death = FIPS_2_death['Deaths_Per_1e5']
 
     fig,ax1 = plt.subplots() 
-    x = [0, 1, 2, 3, 4, 5, 6]
-    labels = ['May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    # x = [0, 1, 2, 3, 4, 5, 6]
+    # x = list(range(len(months)))
+    # labels = ['May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    labels = months.keys()
     x = np.arange(len(labels))
 
     width = 0.35 
-    ax1.set_xticks(x, labels)
-    ax1.set_ylim(0, 100)
-    ax1.set_xlim(0,6)
-    ax1.set_title('18+ Vaccination Rates and Deaths in '+FIPS_1_name+" and "+FIPS_2_name, wrap=True)
-    ax1.set_xlabel('Month 2021')
+    # ax1.set_xticks(x, labels) #Deprecated
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(labels, rotation=90)
+    # ax1.set_ylim(0, 100)
+    # ax1.set_xlim(0,6)
+    ax1.set_title('18+ Vaccination Rates and Deaths in ' + FIPS_1_name + " and "+ FIPS_2_name, wrap=True)
+    ax1.set_xlabel('Dates')
     ax1.set_ylabel('Percent Vaccinated') 
 
-    ax1.bar(x - width/2, FIPS_1_vax, width, color='darkcyan', label='% Vaccinated in '+FIPS_1_name)
-    ax1.bar(x + width/2, FIPS_2_vax, width, color='indianred', label='% Vaccinated in '+FIPS_2_name)
+    ax1.bar(x - width/2, FIPS_1_vax, width, color='darkcyan', label='% Vaccinated in ' + FIPS_1_name)
+    ax1.bar(x + width/2, FIPS_2_vax, width, color='indianred', label='% Vaccinated in ' + FIPS_2_name)
 
     ax2 = ax1.twinx()
-    ax2.plot(x, FIPS_1_death, color='darkslategray', label = '# of Deaths in '+FIPS_1_name)
-    ax2.plot(x, FIPS_2_death, color='firebrick', label = '# of Deaths in '+FIPS_2_name)
+    ax2.plot(x, FIPS_1_death, color='darkslategray', label='# of Deaths in ' + FIPS_1_name)
+    ax2.plot(x, FIPS_2_death, color='firebrick', label='# of Deaths in ' + FIPS_2_name)
+    
     ax2.set_ylabel('Deaths per 100k Population.')
     
     handles_1, _ = ax1.get_legend_handles_labels()
