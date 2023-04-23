@@ -21,7 +21,9 @@ def readit(filename):
 
 
 def get_death_number_JHU(start, end):
-    """This is a function that returns a dataframe that contain Fips and the death number from start to end (two dates passed as strings), and create a csv file in data 
+    """This is a function that returns a dataframe that contain Fips 
+    and the death number from start to end (two dates passed as strings), 
+    and create a csv file in data 
     Parameters: 
         start: str , write it in form "05-01-2021.csv",
         end: str,
@@ -108,12 +110,13 @@ def get_confirm_number_JHU(start, end):
 def create_death_number_JHU():
     """This function writes death number into 7 (month) csv files, each file document death number from 05-01 to the end of this month
     Please create a JHU file in ../data First, Or this function will give error. 
-    If you don't want to wast time to input augument to create csv file for every month please run following function
+    If you don't want to waste time to input augument to create csv file for every month please run following function
     """
     start = '05-01-2021'
     ends = create_dates.new_dates
     
     for end in ends:
+        print(end)
         get_death_number_JHU(start, end)
 
 

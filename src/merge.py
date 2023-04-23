@@ -14,7 +14,7 @@ def merge(date):
     df = pd.read_csv(base_CDC + "vaccinations-" + date + ".csv",
                      converters={'FIPS': str})
     deaths = pd.read_csv(
-        base_JHU + "deaths-05-01-2021-to-"+date+".csv", converters={'FIPS': str})
+        base_JHU + "deaths-05-01-2021-to-" + date + ".csv", converters={'FIPS': str})
 
     # Add the deaths data to the dataframe
     return df.merge(deaths, on='FIPS')

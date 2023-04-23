@@ -74,6 +74,7 @@ clean_csv:
 	rm data/CDC/*.csv
 	rm data/JHU/*.csv
 	@echo "Done"
+	
 
 # Run unit tests on JHU and Merge data.
 test_JHU: 
